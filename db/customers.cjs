@@ -1,6 +1,6 @@
 const client = require('./client.cjs')
 
-const createCustomer = async(customerName) => {
+const createCustomer = async (customerName) => {
   try {
     const { rows } = await client.query(`
       INSERT INTO customers (name)
@@ -8,12 +8,24 @@ const createCustomer = async(customerName) => {
       RETURNING *;
       `)
     const customer = rows[0]
-      return customer
+    return customer
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getAllCustomers = async () => {
+  try {
+    const { rows: retrievedCustomers } = await client.query(`
+      SELECT * FROM customers;
+      `)
+    return retrievedCustomers
   } catch (error) {
     console.log(error)
   }
 }
 
 module.exports = {
-  createCustomer
+  createCustomer,
+  getAllCustomers
 }
