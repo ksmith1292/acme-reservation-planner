@@ -1,7 +1,7 @@
 const client = require('./client.cjs')
-const {createCustomer} = require('./customers.cjs')
-const {createRestaurant} = require('./restaurants.cjs')
-const {createReservation} = require('./reservations.cjs')
+const {createCustomer, getAllCustomers} = require('./customers.cjs')
+const {createRestaurant, getAllRestaurants} = require('./restaurants.cjs')
+const {createReservation, destroyReservation} = require('./reservations.cjs')
 
 const dropTables = async () => {
   try {
@@ -72,8 +72,22 @@ const syncAndSeed = async () => {
   await createReservation('2025-01-22', 4, subway.id, greg.id)
   await createReservation('2025-02-22', 2, mcds.id, kevin.id)
   await createReservation('2025-03-22', 3, portillos.id, john.id)
-  await createReservation('2025-04-22', 5, burgerKing.id, harry.id)
+  await createReservation('2025-04-22', 1, burgerKing.id, harry.id)
+  await createReservation('2025-05-22', 5, portillos.id, john.id)
+  await createReservation('2025-06-22', 2, mcds.id, kevin.id)
+ const subwayHarryJuly22 = await createReservation('2025-07-22', 4, subway.id, harry.id)
   console.log('reservation created')
+
+  console.log('Getting all customers')
+  const allCustomers = await getAllCustomers()
+  console.log(allCustomers)
+
+  console.log('Getting all restaurants')
+  const allRestaurants = await getAllRestaurants()
+  console.log(allRestaurants)
+
+  console.log('deleting reservation')
+  await destroyReservation(subwayHarryJuly22.id)
 
   await client.end()
   console.log('disconnected for the db')
